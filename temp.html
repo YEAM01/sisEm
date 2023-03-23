@@ -1,0 +1,145 @@
+<html> 
+<head>
+
+	
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="raphael-2.1.4.min.js"></script>
+<script src="justgage.js"></script>
+
+<script>
+	//variables
+var accessToken = "ccef64084f45fe6a4b8b95f7b73e93e0c2757fac";
+var deviceID = "36001f000247363339343638"
+var url = "https://api.particle.io/v1/devices/" + deviceID + "/gradosC";  //es el url con la variable que voy a mandar llamar gradosC
+var url2 = "https://api.particle.io/v1/devices/" + deviceID + "/gradosF";  //es el url con la variable que voy a mandar llamar gradosC
+var url3 = "https://api.particle.io/v1/devices/" + deviceID + "/humedad";  //es el url con la variable que voy a mandar llamar gradosC
+
+function callback(data, status){
+	if (status == "success") {
+		temp = parseFloat(data.result);
+		temp = temp.toFixed(2);
+		g.refresh(temp);
+		setTimeout(getReading, 1000);
+	}
+
+	else {
+		alert("There was a problem");
+	}
+}
+
+
+function getReading(){ //construye nuestro link
+   	$.get(url, {access_token: accessToken}, callback); //se construye el http se manda y si es exitosa se trae el json
+}
+function callback2(data, status){
+	if (status == "success") {
+		temp1 = parseFloat(data.result);
+		temp1 = temp1.toFixed(2);
+		g2.refresh(temp1);
+		setTimeout(getReading, 1000);
+	}
+
+	else {
+		alert("There was a problem");
+	}
+}
+
+function getReading2(){ //construye nuestro link
+   	$.get(url2, {access_token: accessToken}, callback2); //se construye el http se manda y si es exitosa se trae el json
+}
+
+function callback3(data, status){
+	if (status == "success") {
+		temp2 = parseFloat(data.result);
+		temp2 = temp2.toFixed(2);
+		g3.refresh(temp2);
+		setTimeout(getReading, 1000);
+	}
+
+	else {
+		alert("There was a problem");
+	}
+}
+
+function getReading3(){ //construye nuestro link
+   	$.get(url3, {access_token: accessToken}, callback3); //se construye el http se manda y si es exitosa se trae el json
+}
+
+</script>
+
+
+<style>
+	.container {
+	  display: flex;
+	  justify-content: center;
+	}
+
+#gauge{
+
+width: 650px;
+height: 650px;
+
+}
+#gauge2{
+
+width: 650px;
+height:  650px;
+
+}
+#gauge3{
+
+width:  650px;
+height:  650px;
+
+}
+
+
+  </style>
+
+</head>	
+
+<body>
+<div class="container">
+	
+<div id="gauge" class="200x160px" ></div>
+<div id="gauge2" class="200x160px" ></div>
+<div id="gauge3" class="200x160px" ></div>
+	</div>
+
+
+<script>
+var g = new JustGage({  //grafica lo manda cada segundo
+    id: "gauge",
+    value: 0,
+    min: 0,
+    max: 400,
+    title: "Temperatura (C)"
+});
+
+var g2 = new JustGage({  //grafica lo manda cada segundo
+    id: "gauge2",
+    value: 0,
+    min: 0,
+    max: 400,
+    title: "Temperatura (F)"
+});
+
+var g3 = new JustGage({  //grafica lo manda cada segundo
+    id: "gauge3",
+    value: 0,
+    min: 0,
+    max: 400,
+    title: "Humedad (%)"
+	
+});
+
+getReading();
+getReading2();
+getReading3();
+</script>
+
+
+</body>
+
+
+</html>

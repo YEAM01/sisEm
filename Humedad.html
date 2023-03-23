@@ -1,0 +1,46 @@
+<html> 
+<head>
+
+	
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="raphael-2.1.4.min.js"></script>
+<script src="justgage.js"></script>
+
+<script>
+	//variables
+var accessToken = "ccef64084f45fe6a4b8b95f7b73e93e0c2757fac";
+var deviceID = "36001f000247363339343638"
+var url = "https://api.particle.io/v1/devices/" + deviceID + "/humedad";  //es el url con la variable que voy a mandar llamar gradosC
+function callback(data, status){
+	if (status == "success") {
+		Humedad = parseFloat(data.result);
+		Humedad = Humedad.toFixed(2);
+		g.refresh(Humedad);
+		setTimeout(getReading, 1000);
+	}
+	else {
+		alert("There was a problem");
+	}
+}
+function getReading(){ //construye nuestro link
+   	$.get(url, {access_token: accessToken}, callback); //se construye el http se manda y si es exitosa se trae el json
+}
+</script>
+</head>	
+
+<body>
+<div id="gauge" class="200x160px"></div>
+
+<script>
+var g = new JustGage({  //grafica lo manda cada segundo
+    id: "gauge",
+    value: 0,
+    min: 0,
+    max: 400,
+    title: "Humedad %"
+});
+getReading();
+</script>
+
+</body>
+</html>
